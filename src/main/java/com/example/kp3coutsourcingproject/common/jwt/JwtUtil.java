@@ -3,7 +3,7 @@ package com.example.kp3coutsourcingproject.common.jwt;
 import com.example.kp3coutsourcingproject.common.dto.ApiResponseDto;
 import com.example.kp3coutsourcingproject.common.exception.CustomException;
 import com.example.kp3coutsourcingproject.common.exception.ErrorCode;
-import com.example.kp3coutsourcingproject.common.redis.RedisUtils;
+import com.example.kp3coutsourcingproject.redis.util.RedisUtils;
 import com.example.kp3coutsourcingproject.user.entity.UserRoleEnum;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;

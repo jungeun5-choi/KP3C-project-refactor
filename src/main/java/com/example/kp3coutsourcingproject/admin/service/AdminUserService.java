@@ -3,7 +3,7 @@ package com.example.kp3coutsourcingproject.admin.service;
 import com.example.kp3coutsourcingproject.admin.dto.AdminUserResponseDto;
 import com.example.kp3coutsourcingproject.admin.dto.AdminUserRoleRequestDto;
 import com.example.kp3coutsourcingproject.common.jwt.JwtUtil;
-import com.example.kp3coutsourcingproject.common.redis.RedisUtils;
+import com.example.kp3coutsourcingproject.redis.util.RedisUtils;
 import com.example.kp3coutsourcingproject.post.entity.Post;
 import com.example.kp3coutsourcingproject.post.repository.PostRepository;
 import com.example.kp3coutsourcingproject.user.dto.ProfileRequestDto;
