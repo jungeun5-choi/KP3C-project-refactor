@@ -5,7 +5,6 @@ import com.example.kp3coutsourcingproject.common.dto.ApiResponseDto;
 import com.example.kp3coutsourcingproject.common.security.UserDetailsImpl;
 import com.example.kp3coutsourcingproject.post.dto.PostRequestDto;
 import com.example.kp3coutsourcingproject.post.dto.PostResponseDto;
-import com.example.kp3coutsourcingproject.redis.service.RedisPostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,14 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/kp3c/manage/post")
 @RequiredArgsConstructor
 public class AdminPostController {
     private final AdminPostService adminPostService;
-    private final RedisPostService timelineService;
 
     @PostMapping
     public ResponseEntity<PostResponseDto> createPost(
@@ -28,7 +24,6 @@ public class AdminPostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         PostResponseDto result = adminPostService.createPost(requestDto, userDetails.getUser());
-        timelineService.saveMyLastCreatedPost(userDetails.getUser());
         return ResponseEntity.ok().body(result);
     }
 
