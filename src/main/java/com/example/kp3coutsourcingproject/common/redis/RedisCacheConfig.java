@@ -21,15 +21,7 @@ import java.time.Duration;
 public class RedisCacheConfig {
     @Bean
     public RedisCacheManager redisCacheManager(RedisConnectionFactory cacheConnectionFactory) {
-        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator
-                .builder()
-                .allowIfSubType(Object.class)
-                .build();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new JavaTimeModule());
-        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
-        GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+        GenericJackson2JsonRedisSerializer redisSerializer = getGenericJackson2JsonRedisSerializer();
 
         RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
@@ -41,5 +33,20 @@ public class RedisCacheConfig {
                 .fromConnectionFactory(cacheConnectionFactory)
                 .cacheDefaults(config)
                 .build();
+    }
+
+    private GenericJackson2JsonRedisSerializer getGenericJackson2JsonRedisSerializer() {
+        PolymorphicTypeValidator typeValidator = BasicPolymorphicTypeValidator
+                .builder()
+                .allowIfSubType(Object.class)
+                .build();
+
+        // ObjectMapper 를 사용해서 LocalTimeDate를 직렬화를 하기 위해 매핑
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
+        GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
+
+        return redisSerializer;
     }
 }
