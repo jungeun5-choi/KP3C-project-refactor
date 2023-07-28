@@ -32,7 +32,7 @@ public class PostController {
 	//////////////////////////////////////////////////////////////////////////////////
 
 	// 홈피드(유저 작성 글 + 유저가 팔로잉한 글)
-	// http://localhost:8080/kp3c/posts
+	// http://localhost:8080/kp3c/homeFeed
 	@GetMapping("/homeFeed")
 	public ResponseEntity<List<PostResponseDto>> getHomeFeed(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 		List<PostResponseDto> results = postService.getHomeFeed(userDetails.getUser());

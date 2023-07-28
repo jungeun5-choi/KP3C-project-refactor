@@ -3,10 +3,7 @@ package com.example.kp3coutsourcingproject.post.dto;
 import com.example.kp3coutsourcingproject.common.dto.ApiResponseDto;
 import com.example.kp3coutsourcingproject.common.file.Post_Image;
 import com.example.kp3coutsourcingproject.post.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -15,6 +12,7 @@ import java.util.List;
 @Setter
 @Builder
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDto extends ApiResponseDto {
 	private Long id;
