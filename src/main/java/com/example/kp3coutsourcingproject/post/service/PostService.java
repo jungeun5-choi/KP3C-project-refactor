@@ -52,9 +52,17 @@ public class PostService {
 		return posts;
 	}
 
+	// 게시글 1개만
+	@Cacheable(value = "post", key = "#postId", cacheManager = "redisCacheManager")
+	public PostResponseDto getPost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow(() ->
+				new NullPointerException("존재하지 않는 게시글 입니다.")
+		);
+		return new PostResponseDto(post);
+	}
+
 	// 선택한 게시글에 대한 모든 답글 조회(답글의 답글 x, 답글만!)
 	@Transactional
-	@Cacheable(value = "post", key = "#postId", cacheManager = "redisCacheManager")
 	public List<PostResponseDto> getChildPosts(Long postId) {
 		Post parent = findPost(postId);
 		List<PostResponseDto> childPosts = postRepository

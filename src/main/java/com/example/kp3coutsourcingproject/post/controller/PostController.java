@@ -48,9 +48,20 @@ public class PostController {
 		return ResponseEntity.ok().body(results);
 	}
 
-	// 선택한 게시글에 대한 모든 답글 조회(답글의 답글 x, 답글만!)
 	@GetMapping("/post/{id}")
-	public ResponseEntity<List<PostResponseDto>> getChildPosts(@PathVariable Long id){
+	public ResponseEntity<PostResponseDto> getPost(
+			@PathVariable Long id,
+			@AuthenticationPrincipal UserDetailsImpl userDetails) {
+		PostResponseDto result = postService.getPost(id);
+		return ResponseEntity.ok().body(result);
+	}
+
+	// 선택한 게시글에 대한 모든 답글 조회(답글의 답글 x, 답글만!)
+	@GetMapping("/post/{id}/child")
+	public ResponseEntity<List<PostResponseDto>> getChildPosts(
+			@PathVariable Long id,
+			@AuthenticationPrincipal UserDetailsImpl userDetails
+	){
 		List<PostResponseDto> results = postService.getChildPosts(id);
 		return ResponseEntity.ok().body(results);
 	}

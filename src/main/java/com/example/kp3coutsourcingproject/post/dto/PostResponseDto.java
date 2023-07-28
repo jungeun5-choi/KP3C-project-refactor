@@ -20,9 +20,7 @@ public class PostResponseDto extends ApiResponseDto {
 	private String nickname;
 	private String content;
 	private LocalDateTime createdAt;
-
-	private List<Post_Image> imageUrlList;
-
+	private List<PostImageDto> imageUrlList; // entity 대신 dto로
 	private List<PostResponseDto> children;
 
 	public PostResponseDto(Post post) {
@@ -31,7 +29,7 @@ public class PostResponseDto extends ApiResponseDto {
 		this.nickname = post.getUser().getNickname();
 		this.content = post.getContent();
 		this.createdAt = post.getCreatedAt();
-		this.imageUrlList = post.getImagetList();
+		this.imageUrlList = post.getImagetList().stream().map(PostImageDto::new).toList();
 		this.children = post.getChildren()
 				.stream()
 				.map(PostResponseDto::new)
