@@ -44,8 +44,8 @@ public class RedisUtils {
     public void delete(String key) {
         redisTemplate.delete(key);
     }
-    public void delete(String key, Object hashkey) {
-        String token = hashkey.toString();
+    public void delete(String key, Object hashKey) {
+        String token = hashKey.toString();
         redisTemplate.opsForHash().delete(key, token);
     }
 

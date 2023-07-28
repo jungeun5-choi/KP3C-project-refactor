@@ -6,8 +6,8 @@ import com.example.kp3coutsourcingproject.post.entity.Post;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Builder
@@ -23,7 +23,7 @@ public class PostResponseDto extends ApiResponseDto {
 
 	private List<Post_Image> imageUrlList;
 
-	private List<PostResponseDto> children = new ArrayList<>();
+	private List<PostResponseDto> children;
 
 	public PostResponseDto(Post post) {
 		this.id = post.getId();
@@ -32,5 +32,9 @@ public class PostResponseDto extends ApiResponseDto {
 		this.content = post.getContent();
 		this.createdAt = post.getCreatedAt();
 		this.imageUrlList = post.getImagetList();
+		this.children = post.getChildren()
+				.stream()
+				.map(PostResponseDto::new)
+				.collect(Collectors.toList());
 	}
 }

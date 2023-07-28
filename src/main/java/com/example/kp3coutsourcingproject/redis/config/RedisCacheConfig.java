@@ -31,7 +31,7 @@ public class RedisCacheConfig {
         objectMapper.activateDefaultTyping(typeValidator, ObjectMapper.DefaultTyping.NON_FINAL);
         GenericJackson2JsonRedisSerializer redisSerializer = new GenericJackson2JsonRedisSerializer(objectMapper);
 
-        RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+        RedisCacheConfiguration config = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(redisSerializer))
                 .entryTtl(Duration.ofMinutes(10)); // 캐시 지속 시간
@@ -39,7 +39,7 @@ public class RedisCacheConfig {
         return RedisCacheManager
                 .RedisCacheManagerBuilder
                 .fromConnectionFactory(cacheConnectionFactory)
-                .cacheDefaults(configuration)
+                .cacheDefaults(config)
                 .build();
     }
 }

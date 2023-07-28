@@ -33,7 +33,7 @@ public class PostService {
 
 	// 홈피드(유저 작성 글 + 유저가 팔로잉한 글)
 	@Transactional
-	@Cacheable(value = "Home_Feed", key = "#user.username", cacheManager = "redisCacheManager")
+	// @Cacheable(value = "Home_Feed", key = "#user.username", cacheManager = "redisCacheManager")
 	public List<PostResponseDto> getHomeFeed(User user) {
 		List<PostResponseDto> posts = postRepository.getHomeFeed(user.getId()).stream()
 				.map(PostResponseDto::new)
@@ -54,8 +54,12 @@ public class PostService {
 
 	// 선택한 게시글에 대한 모든 답글 조회(답글의 답글 x, 답글만!)
 	@Transactional
-	public List<PostResponseDto> getChildPosts(Long id) {
-		List<PostResponseDto> childPosts = postRepository.findAllByParent(findPost(id)).stream()
+	@Cacheable(value = "post", key = "#postId", cacheManager = "redisCacheManager")
+	public List<PostResponseDto> getChildPosts(Long postId) {
+		Post parent = findPost(postId);
+		List<PostResponseDto> childPosts = postRepository
+				.findAllByParent(parent)
+				.stream()
 				.map(PostResponseDto::new)
 				.collect(Collectors.toList());
 		return childPosts;
