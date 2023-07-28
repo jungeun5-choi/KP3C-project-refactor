@@ -5,7 +5,7 @@ import com.example.kp3coutsourcingproject.common.exception.ErrorCode;
 import com.example.kp3coutsourcingproject.common.file.FileStore;
 import com.example.kp3coutsourcingproject.common.file.UploadFile;
 import com.example.kp3coutsourcingproject.common.jwt.JwtUtil;
-import com.example.kp3coutsourcingproject.redis.util.RedisUtils;
+import com.example.kp3coutsourcingproject.common.redis.RedisUtils;
 import com.example.kp3coutsourcingproject.user.dto.SignupRequestDto;
 import com.example.kp3coutsourcingproject.user.dto.UserProfileRequestDto;
 import com.example.kp3coutsourcingproject.user.dto.UserProfileResponseDto;

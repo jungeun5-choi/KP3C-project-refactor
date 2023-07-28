@@ -1,4 +1,4 @@
-package com.example.kp3coutsourcingproject.config;
+package com.example.kp3coutsourcingproject.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
