@@ -3,18 +3,16 @@ package com.example.kp3coutsourcingproject.post.dto;
 import com.example.kp3coutsourcingproject.common.dto.ApiResponseDto;
 import com.example.kp3coutsourcingproject.common.file.Post_Image;
 import com.example.kp3coutsourcingproject.post.entity.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Setter
 @Builder
 @Getter
+@NoArgsConstructor
 @AllArgsConstructor
 public class PostResponseDto extends ApiResponseDto {
 	private Long id;
@@ -22,10 +20,8 @@ public class PostResponseDto extends ApiResponseDto {
 	private String nickname;
 	private String content;
 	private LocalDateTime createdAt;
-
-	private List<Post_Image> imageUrlList;
-
-	private List<PostResponseDto> children = new ArrayList<>();
+	private List<PostImageDto> imageUrlList; // entity 대신 dto로
+	private List<PostResponseDto> children;
 
 	public PostResponseDto(Post post) {
 		this.id = post.getId();
@@ -33,6 +29,10 @@ public class PostResponseDto extends ApiResponseDto {
 		this.nickname = post.getUser().getNickname();
 		this.content = post.getContent();
 		this.createdAt = post.getCreatedAt();
-		this.imageUrlList = post.getImagetList();
+		this.imageUrlList = post.getImagetList().stream().map(PostImageDto::new).toList();
+		this.children = post.getChildren()
+				.stream()
+				.map(PostResponseDto::new)
+				.collect(Collectors.toList());
 	}
 }

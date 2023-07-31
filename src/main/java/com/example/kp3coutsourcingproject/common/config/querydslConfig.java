@@ -1,4 +1,4 @@
-package com.example.kp3coutsourcingproject.config;
+package com.example.kp3coutsourcingproject.common.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;

@@ -1,4 +1,4 @@
-package com.example.kp3coutsourcingproject.config;
+package com.example.kp3coutsourcingproject.common.config;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;

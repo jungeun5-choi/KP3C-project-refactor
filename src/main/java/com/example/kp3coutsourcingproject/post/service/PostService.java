@@ -8,6 +8,7 @@ import com.example.kp3coutsourcingproject.user.entity.User;
 import com.example.kp3coutsourcingproject.user.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,12 +25,15 @@ public class PostService {
 	private final UserRepository userRepository;
 
 	// 모든 글 계층형으로 조회(답글까지)
+	@Transactional
 	public List<PostResponseDto> getAllPosts() {
 		List<Post> postList = postRepository.findAllPosts();
 		return convertNestedStructure(postList);
 	}
 
 	// 홈피드(유저 작성 글 + 유저가 팔로잉한 글)
+	@Transactional
+	// @Cacheable(value = "Home_Feed", key = "#user.username", cacheManager = "redisCacheManager")
 	public List<PostResponseDto> getHomeFeed(User user) {
 		List<PostResponseDto> posts = postRepository.getHomeFeed(user.getId()).stream()
 				.map(PostResponseDto::new)
@@ -39,6 +43,7 @@ public class PostService {
 	}
 
 	// 자기피드(유저 작성 글만)
+	@Transactional
 	public List<PostResponseDto> getMyFeed(User user) {
 		List<PostResponseDto> posts = postRepository.getUserFeed(user.getId()).stream()
 				.map(PostResponseDto::new)
@@ -47,9 +52,22 @@ public class PostService {
 		return posts;
 	}
 
+	// 게시글 1개만
+	@Cacheable(value = "post", key = "#postId", cacheManager = "redisCacheManager")
+	public PostResponseDto getPost(Long postId) {
+		Post post = postRepository.findById(postId).orElseThrow(() ->
+				new NullPointerException("존재하지 않는 게시글 입니다.")
+		);
+		return new PostResponseDto(post);
+	}
+
 	// 선택한 게시글에 대한 모든 답글 조회(답글의 답글 x, 답글만!)
-	public List<PostResponseDto> getChildPosts(Long id) {
-		List<PostResponseDto> childPosts = postRepository.findAllByParent(findPost(id)).stream()
+	@Transactional
+	public List<PostResponseDto> getChildPosts(Long postId) {
+		Post parent = findPost(postId);
+		List<PostResponseDto> childPosts = postRepository
+				.findAllByParent(parent)
+				.stream()
 				.map(PostResponseDto::new)
 				.collect(Collectors.toList());
 		return childPosts;
@@ -58,6 +76,7 @@ public class PostService {
 	//////////////////////////////////////////////////////////////////////////
 
 	// 포스트 작성
+	@Transactional
 	public PostResponseDto createPost(PostRequestDto requestDto, User user) {
 		User targetUser = findUser(user.getId());
 
@@ -98,6 +117,7 @@ public class PostService {
 	}
 
 	// 포스트 삭제
+	@Transactional
 	public void deletePost(Long id, User user) {
 		Post post = findPost(id);
 		User targetUser = findUser(user.getId());
